@@ -3,7 +3,6 @@ import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { api } from "../services/apiClient";
 
-
 type User = {
   email: string;
   permissions: string[];
@@ -46,7 +45,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const { email, permissions, roles } = response.data;
 
         setUser({ email, permissions, roles });
-      }).catch(error => {
+      }).catch(() => {
         signOut();
       });
     }

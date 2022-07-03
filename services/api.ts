@@ -1,14 +1,14 @@
 import axios, { AxiosError } from 'axios';
 import { parseCookies, setCookie } from 'nookies';
 import { signOut } from '../contexts/AuthContext';
-
+import { AuthTokenError } from './errors/AuthTokenError';
 
 let isRefreshing = false;
 let failedRequestsQueue = [];
 
 export function setupAPIClient(ctx = undefined) {
   let cookies = parseCookies(ctx);
-  
+
   const api = axios.create({
     baseURL: 'http://localhost:3333',
     headers: {
@@ -28,7 +28,7 @@ export function setupAPIClient(ctx = undefined) {
 
         if (!isRefreshing) {
           isRefreshing = true;
-
+          
           api.post('refresh', {
             refreshToken
           }).then((response) => {
@@ -74,6 +74,8 @@ export function setupAPIClient(ctx = undefined) {
       } else {
         if (process.browser) {
           signOut();
+        } else {
+          return Promise.reject(new AuthTokenError())
         }
       }
     }
