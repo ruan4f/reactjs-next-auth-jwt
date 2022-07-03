@@ -29,6 +29,8 @@ export function withSSRAuth<P>(fn: GetServerSideProps<P>): GetServerSideProps {
           }
         }
       }
+
+      return Promise.reject(err);
     }
   }
 }

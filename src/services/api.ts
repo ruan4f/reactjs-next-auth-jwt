@@ -19,7 +19,7 @@ export function setupAPIClient(ctx = undefined) {
   api.interceptors.response.use(response => {
     return response;
   }, (error) => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       if (error.response.data?.code == 'token.expired') {
         cookies = parseCookies(ctx);
 
@@ -28,7 +28,7 @@ export function setupAPIClient(ctx = undefined) {
 
         if (!isRefreshing) {
           isRefreshing = true;
-          
+
           api.post('refresh', {
             refreshToken
           }).then((response) => {
